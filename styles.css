@@ -16,10 +16,13 @@
 
 /*NAVIGATION BAR*/
   nav {
+    position: relative;
     display: flex;
     justify-content: space-between;
     padding: 0 24px;
     border-bottom: 1px solid var(--very-light-pink);
+    background-color: var(--white);
+    z-index: 1;
   }
   .menu {
     display: none;
@@ -81,6 +84,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  /*DARK MODE*/
+  .darken {
+    width: 100%;
+    height: calc(100%);
+    position: fixed;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
   /*DESKTOP MENU*/
