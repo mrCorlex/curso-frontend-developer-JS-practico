@@ -7,7 +7,7 @@ const asideShoppingCart = document.querySelector(".product-detail");
 const productCardsContainer = document.querySelector(".cards-container");
 const productList = [];
 const productDetailContainer = document.querySelector(".product-detail-detail");
-const closeProductDetailContainer = document.querySelector(".product-detail-close-detail");
+
 const darkMode = document.querySelector(".darken");
 
 //menus closed const
@@ -19,7 +19,7 @@ const isAsideShoppingCartClosed = asideShoppingCart.classList.contains("inactive
 navEmail.addEventListener("click", toggleDesktopMenu);
 imgMenu.addEventListener("click", toggleMobileMenu);
 shoppingCartIcon.addEventListener("click", toggleShoppingCart);
-closeProductDetailContainer.addEventListener("click", productDetailClose);
+
 
 //HIDE MENUS FUNCTION - EVENT LISTENER OUT OF THE ELEMENTS
 document.addEventListener('click', function hideMenus(event) {
@@ -82,7 +82,9 @@ function openDetailProductMenu() {
 
 function productDetailClose() {
     productDetailContainer.classList.add("inactive");
+    removeDetailProductCard();
 }
+
 
 //INSERT PRODUCTS INTO productList[]
 productList.push ({
@@ -134,8 +136,7 @@ function insertProducts (arr) {
         const productCard = document.createElement("div");
         productCard.classList.add("product-card");
         productCard.setAttribute("id", product.id);
-        productCard.addEventListener("click", openDetailProductMenu);
-                
+                       
         const imgProduct = document.createElement("img");
         imgProduct.classList.add("product-img");
         imgProduct.setAttribute("src", product.img);
@@ -167,28 +168,63 @@ function insertProducts (arr) {
 }
 
 insertProducts(productList);
-/* let classAtribute = ".product-card"
-const productCardDetail = document.querySelectorAll(classAtribute);
-console.log(productCardDetail)
 
-console.log(productList[0].id)
- */
-/* for (let i = 0; i < productCardDetail.length; i++) {
-    productCardDetail[i].addEventListener("click", getIdAttribute);
-    }; */
-
-/* function getIdAttribute() {
-    console.log(productCardDetail.getAttribute("id"));
-} */
+let productCardDetail = document.querySelectorAll(".product-card");
 
 window.onload = function () {
-    let productCardDetail = document.querySelectorAll(".product-card");
-    let productCardDetailContainer = document.querySelector("product-detail-detail");
+    
+    productCardDetail.forEach(product => product.addEventListener("click", function() {
+        let currentId=this.id;
+        console.log(currentId);
+        openDetailProductMenu(product);
+        for (product of productList) {
+            if (product.id == currentId){
+                console.log(product);
+                productDetailContainer.setAttribute("id", product.id)
 
-    for (i=0; i < productCardDetail.length; i++) {
-        productCardDetail[i].addEventListener("click", function() {
-            productCardDetailContainer.innerText = this.productCardDetail[i].id
+                const productDetail = document.createElement("div");
+                productDetail.classList.add("product-detail-close-detail");
+                
+                    
+                const closeDetail = document.createElement("img");
+                closeDetail.classList.add("product-detail-close-img");
+                closeDetail.setAttribute("src", "./icons/icon_close.png")
+                closeDetail.setAttribute("alt","close");
+                
+                const imgDetailContainer = document.createElement("img");
+                imgDetailContainer.classList.add("img-detail-container");
+                imgDetailContainer.setAttribute("alt",product.name);
+                imgDetailContainer.setAttribute("src",product.img);
+                
+                const productInfoDetailDiv = document.createElement("div");
+                productInfoDetailDiv.classList.add("product-info-detail");
+                const productInfoDetailPrice = document.createElement("p");
+                productInfoDetailPrice.innerText = "$ " + product.price;
+                const productInfoDetailName = document.createElement("p");
+                productInfoDetailName.innerText = product.name;
+                const productInfoDetailDescription = document.createElement("p");
+                productInfoDetailDescription.innerText = product.description;
+                const buttonDetailCard = document.createElement("button");
+                buttonDetailCard.classList.add("primary-button-detail");
+                buttonDetailCard.classList.add("add-to-cart-button-detail");
+                buttonDetailCard.innerText = "Add to cart";
+                const imgButtonDetailContainer = document.createElement("img");
+                imgButtonDetailContainer.setAttribute("alt","add to cart");
+                imgButtonDetailContainer.setAttribute("src","./icons/bt_add_to_cart.svg");
+
+                productDetail.appendChild(closeDetail);
+                productDetailContainer.appendChild(productDetail);
+                productDetailContainer.appendChild(imgDetailContainer);
+                productInfoDetailDiv.appendChild(productInfoDetailPrice);
+                productInfoDetailDiv.appendChild(productInfoDetailName);
+                productInfoDetailDiv.appendChild(productInfoDetailDescription);
+                productInfoDetailDiv.appendChild(buttonDetailCard);
+                buttonDetailCard.appendChild(imgButtonDetailContainer);
+                productDetailContainer.appendChild(productInfoDetailDiv);
+            }
+            const closeProductDetailContainer = document.querySelector(".product-detail-close-detail");
+            closeProductDetailContainer.addEventListener("click", productDetailClose);
+            }
         })
-        
-    }
+    )
 }
